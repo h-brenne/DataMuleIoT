@@ -18,3 +18,15 @@ To install on raspberry pi as well as pc,
 `pip install raiden` can be used. This might take some time since there might not be a prebuilt wheel for the pi arch. 
 Raiden binary path needs to be added to PATH to launch. Adding to ~/.bashrc is one solution. Add export PATH=/home/pi/.local/bin:$PATH to the end of ~/.bashrc (replace pi with username).
  
+## Setup ETH node with RPC Endpoint
+I first used an infura.io endpoint, but you'll quickly reach the daily limit for large tests.
+
+This public görli seems to work well: 
+https://rpc.goerli.mudit.blog/
+
+With geth, you can run a node with a http RPC API. I used `geth --syncmode light --http --http.addr 0.0.0.0 --http.api personal,eth,net,web3,debug --goerli --http.corsdomain "*"` Warning: this exposes the RPC endpoint to remote clients.
+
+## Simulate network delay, packet loss, jitter and more with netem
+[Documentation](https://man7.org/linux/man-pages/man8/tc-netem.8.html).
+
+10% packet loss example on wlan0: `sudo tc qdisc add dev wlan0 root netem loss 10%`
